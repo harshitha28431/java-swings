@@ -1,0 +1,117 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class SimpleCalculator extends JFrame implements ActionListener {
+    JTextField input;
+    JButton[] numButtons = new JButton[10];
+    JButton add, sub, mul, div, eq, clr;
+    JPanel panel;
+
+    String operator = "";
+    double num1, num2, result;
+
+    public SimpleCalculator() {
+        setTitle("Simple Calculator");
+        setSize(350, 450);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(null);
+
+        input = new JTextField();
+        input.setBounds(30, 40, 280, 40);
+        input.setEditable(false);
+        add(input);
+
+        add = new JButton("+");
+        sub = new JButton("-");
+        mul = new JButton("*");
+        div = new JButton("/");
+        eq = new JButton("=");
+        clr = new JButton("C");
+
+        JButton[] funcButtons = {add, sub, mul, div, eq, clr};
+        for (JButton b : funcButtons) {
+            b.addActionListener(this);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            numButtons[i] = new JButton(String.valueOf(i));
+            numButtons[i].addActionListener(this);
+        }
+
+        panel = new JPanel();
+        panel.setBounds(30, 100, 280, 300);
+        panel.setLayout(new GridLayout(4, 4, 10, 10));
+
+        panel.add(numButtons[1]);
+        panel.add(numButtons[2]);
+        panel.add(numButtons[3]);
+        panel.add(add);
+        panel.add(numButtons[4]);
+        panel.add(numButtons[5]);
+        panel.add(numButtons[6]);
+        panel.add(sub);
+        panel.add(numButtons[7]);
+        panel.add(numButtons[8]);
+        panel.add(numButtons[9]);
+        panel.add(mul);
+        panel.add(clr);
+        panel.add(numButtons[0]);
+        panel.add(eq);
+        panel.add(div);
+
+        add(panel);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        for (int i = 0; i < 10; i++) {
+            if (e.getSource() == numButtons[i]) {
+                input.setText(input.getText() + i);
+                return;
+            }
+        }
+
+        if (e.getSource() == clr) {
+            input.setText("");
+            operator = "";
+            num1 = num2 = result = 0;
+        }
+
+        if (e.getSource() == add || e.getSource() == sub || e.getSource() == mul || e.getSource() == div) {
+            try {
+                num1 = Double.parseDouble(input.getText());
+                operator = ((JButton) e.getSource()).getText();
+                input.setText(input.getText() + operator);
+            } catch (Exception ex) {
+                input.setText("Error");
+            }
+        }
+
+        if (e.getSource() == eq) {
+            try {
+                String text = input.getText();
+                String[] parts = text.split("\\" + operator); // split based on + - * /
+                if (parts.length == 2) {
+                    num2 = Double.parseDouble(parts[1]);
+
+                    switch (operator) {
+                        case "+" -> result = num1 + num2;
+                        case "-" -> result = num1 - num2;
+                        case "*" -> result = num1 * num2;
+                        case "/" -> result = num2 != 0 ? num1 / num2 : Double.NaN;
+                    }
+
+                    input.setText(text + "=" + result); // full expression with result
+                }
+            } catch (Exception ex) {
+                input.setText("Error");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        new SimpleCalculator();
+    }
+}
