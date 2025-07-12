@@ -17,5 +17,8 @@ It performs simple arithmetic operations like addition, subtraction, multiplicat
 ## Author
 Naga Harshitha Bhupathiraju
 ## Image
+Screenshot 2025-07-12 205226.png
+<img width="439" height="565" alt="image" src="https://github.com/user-attachments/assets/5953c437-5c0c-42a0-9b42-aa3edb945b91" />
+
 
 
